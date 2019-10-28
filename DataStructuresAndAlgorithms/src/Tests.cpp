@@ -9,16 +9,16 @@ void testUndirectedWalk()
 	//printSequenceDifference(vec);
 	//return 0;
 
-	for (int n{ 0 }; n < 30; ++n)
+	for (int n{ 27 }; n < 100; ++n)
 	{
 		std::cout << "n: " << n << '\n';
 		for (int x{ 1 }; x <= n; ++x)
 		{
 			if (n % 2 == 0 && x % 2 != 0 || n % 2 != 0 && x % 2 == 0)
 				continue;
-			auto base{ [x](const Vec2<int> & pos) { return pos == Vec2<int>{x, 0}; } };
-			auto dist{ [x](const Vec2<int> & pos) { return pathDistance(pos, Vec2<int>{x, 0}); } };
-			int walks{ n == x ? 1 : countUndirectedWalk(n, base, dist) };
+			auto base{ [x](const Vec2<long long> & pos) { return pos == Vec2<long long>{x, 0}; } };
+			auto dist{ [x](const Vec2<long long> & pos) { return pathDistance(pos, Vec2<long long>{x, 0}); } };
+			long long walks{ n == x ? 1 : countUndirectedWalk(n, base, dist) };
 			std::cout << "(" << x << "," << walks << "),";
 		}
 		std::cout << '\n';

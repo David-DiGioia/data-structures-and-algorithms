@@ -5,11 +5,11 @@
 
 // Minimum path distance between 2 points. In other words, the
 // number of steps needed to reach pos2 from pos1
-int pathDistance(const Vec2<int>& pos1, const Vec2<int>& pos2);
+long long pathDistance(const Vec2<long long>& pos1, const Vec2<long long>& pos2);
 
 // Recursive function to count number of undirected walks
 template<class BaseFn, class DistFn>
-static void countUndirectedWalkRec(const int n, int level, int& count, Vec2<int>& pos, std::set<Vec2<int>>& visited, const BaseFn& base, const DistFn& dist)
+static void countUndirectedWalkRec(const int n, int level, long long& count, Vec2<long long>& pos, std::set<Vec2<long long>>& visited, const BaseFn& base, const DistFn& dist)
 {
 	if (dist(pos) > n - level)
 		return;
@@ -21,10 +21,10 @@ static void countUndirectedWalkRec(const int n, int level, int& count, Vec2<int>
 		return;
 	}
 
-	Vec2<int> right{ pos + Vec2<int>{ 1, 0 } };
-	Vec2<int> left{ pos + Vec2<int>{ -1, 0 } };
-	Vec2<int> up{ pos + Vec2<int>{ 0, 1 } };
-	Vec2<int> down{ pos + Vec2<int>{ 0, -1 } };
+	Vec2<long long> right{ pos + Vec2<long long>{ 1, 0 } };
+	Vec2<long long> left{ pos + Vec2<long long>{ -1, 0 } };
+	Vec2<long long> up{ pos + Vec2<long long>{ 0, 1 } };
+	Vec2<long long> down{ pos + Vec2<long long>{ 0, -1 } };
 
 	if (visited.find(right) == visited.end())
 	{
@@ -57,11 +57,11 @@ static void countUndirectedWalkRec(const int n, int level, int& count, Vec2<int>
 // BaseFn returns true if a base case is reached. DistFn returns path distance
 // to target point, so we can break early if we know we can't make it
 template<class BaseFn, class DistFn>
-int countUndirectedWalk(int n, BaseFn base, DistFn dist)
+long long countUndirectedWalk(int n, BaseFn base, DistFn dist)
 {
-	int count{ 0 };
-	Vec2<int> pos{ 0, 0 };
-	std::set<Vec2<int>> visited;
+	long long count{ 0 };
+	Vec2<long long> pos{ 0, 0 };
+	std::set<Vec2<long long>> visited;
 	visited.insert(pos);
 
 	countUndirectedWalkRec(n, 0, count, pos, visited, base, dist);
