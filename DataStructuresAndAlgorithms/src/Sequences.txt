@@ -1,0 +1,165 @@
+Undirected walks of length  0: 1
+Undirected walks of length  1: 2
+Undirected walks of length  2: 2
+Undirected walks of length  3: 6
+Undirected walks of length  4: 14
+Undirected walks of length  5: 38
+Undirected walks of length  6: 82
+Undirected walks of length  7: 226
+Undirected walks of length  8: 522
+Undirected walks of length  9: 1426
+Undirected walks of length 10: 3362
+Undirected walks of length 11: 9134
+Undirected walks of length 12: 21986
+Undirected walks of length 13: 59434
+
+n: 0
+
+n: 1
+x=1: 1
+
+n: 2
+x=2: 1
+
+n: 3
+x=1: 2
+x=3: 1
+
+n: 4
+x=2: 6
+x=4: 1
+
+n: 5
+x=1: 6
+x=3: 12
+x=5: 1
+
+n: 6
+x=2: 20
+x=4: 20
+x=6: 1
+
+n: 7
+x=1: 28
+x=3: 54
+x=5: 30
+x=7: 1
+
+n: 8
+x=2: 92
+x=4: 126
+x=6: 42
+x=8: 1
+
+n: 9
+x=1: 140
+x=3: 256
+x=5: 260
+x=7: 56
+x=9: 1
+
+n: 10
+x=2: 468
+x=4: 654
+x=6: 486
+x=8: 72
+x=10: 1
+
+n: 11
+x=1: 744
+x=3: 1340
+x=5: 1552
+x=7: 840
+x=9: 90
+x=11: 1
+
+n: 12
+x=2: 2532
+x=4: 3558
+x=6: 3428
+x=8: 1364
+x=10: 110
+x=12: 1
+
+n: 13
+x=1: 4116
+x=3: 7366
+x=5: 8924
+x=7: 7072
+x=9: 2106
+x=11: 132
+x=13: 1
+
+n: 14
+x=2: 14220
+x=4: 20030
+x=6: 21260
+x=8: 13706
+x=10: 3120
+x=12: 156
+x=14: 1
+
+n: 15
+x=1: 23504
+x=3: 41872
+x=5: 51932
+x=7: 48188
+x=9: 25124
+x=11: 4466
+x=13: 182
+x=15: 1
+
+Polynomials (starting at last element):
+y = 1
+
+y = x^{2}+x
+
+y = \frac{1}{4}x^{4}+\frac{1}{2}x^{3}+\frac{3}{4}x^{2}+\frac{9}{2}x
+
+y = \frac{1}{36}x^{6}+\frac{1}{12}x^{5}+\frac{13}{36}x^{4}+\frac{43}{12}x^{3}+\frac{65}{18}x^{2}+\frac{55}{3}x+2
+
+y = \frac{1}{576}x^{8}+\frac{1}{144}x^{7}+\frac{17}{288}x^{6}+\frac{59}{72}x^{5}+\frac{1009}{576}x^{4}+\frac{2437}{144}x^{3}+\frac{371}{16}x^{2}+\frac{333}{4}x+14
+
+1, 744
+2, 2532
+3, 7366
+4, 20030
+5, 51932
+6, 129136
+7, 308644
+8, 709718
+9, 1571092
+10, 3350496
+11, 6890250
+
+n=24 first term:
+(2,109177984),
+
+Numerator sequences:
+
+n=0:
+n=1:
+1, 1
+n=2:
+1,2,3,18
+n=3:
+1,3,13,129,130,660
+n=4:
+1,4,34,1009,9748,13356,47952,8064
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
