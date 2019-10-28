@@ -21,12 +21,27 @@
     <ClCompile Include="src\algorithms\BinaryStrings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\algorithms\UndirectedWalk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\dataStructures\Trie.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\algorithms\BinaryStrings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dataStructures\Vec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\algorithms\UndirectedWalk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

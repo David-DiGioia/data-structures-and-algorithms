@@ -124,11 +124,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\algorithms\BinaryStrings.cpp" />
+    <ClCompile Include="src\algorithms\UndirectedWalk.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\algorithms\BinaryStrings.h" />
+    <ClInclude Include="src\algorithms\UndirectedWalk.h" />
     <ClInclude Include="src\dataStructures\Trie.h" />
+    <ClInclude Include="src\dataStructures\Vec.h" />
+    <ClInclude Include="src\Tests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
