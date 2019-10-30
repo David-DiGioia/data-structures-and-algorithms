@@ -71,3 +71,5 @@ long long countUndirectedWalk(int n, BaseFn base, DistFn dist)
 // Repeatedly take the adjacent difference of a vector, printing at each step.
 // This is helpful to tell what degree a polynomial is.
 void printSequenceDifference(std::vector<int>& v);
+
+void printPolynomial(int degree);

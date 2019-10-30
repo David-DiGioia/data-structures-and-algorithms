@@ -5,9 +5,8 @@
 
 void testUndirectedWalk()
 {
-	//std::vector<int> vec{1, 18, 660, 8064};
-	//printSequenceDifference(vec);
-	//return 0;
+	printPolynomial(14);
+	return;
 
 	for (int n{ 27 }; n < 100; ++n)
 	{
