@@ -47,21 +47,27 @@ a(n) = n*(n+1)*(4*n+5)/6.
 
 ----------------------------------------------------
 
-b vectors (data points used to generate polynomials
+b vectors (data points used to generate polynomials)
 NOTATION:
 #num#   . . .   omitted
 
-poly2:  (size = 2/2,   numerator_subs: 0, omitted: 0)
+poly2:  (size = 3/3,   numerator_subs: 0, omitted: 0)
+b = [2, 6, 12]
 
-poly4:  (size = 4/4,   numerator_subs: 0, omitted: 0)
+poly4:  (size = 5/5,   numerator_subs: 0, omitted: 0)
+b = [6, 20, 54, 126, 260]
 
-poly6:  (size = 6/6,   numerator_subs: 0, omitted: 0)
+poly6:  (size = 7/7,   numerator_subs: 0, omitted: 0)
+b = [28, 92, 256, 654, 1552, 3428, 7072]
 
-poly8:  (size = 8/8,   numerator_subs: 0, omitted: 0)
+poly8:  (size = 9/9,   numerator_subs: 0, omitted: 0)
+b = [140, 468, 1340, 3558, 8924, 21260, 48188, 104020, 214178]
 
-poly10: (size = 10/10, numerator_subs: 0, omitted: 0)
+poly10: (size = 11/11, numerator_subs: 0, omitted: 0)
+b = [744, 2532, 7366, 20030, 51932, 129136, 308644, 709718, 1571092, 3350496, 6890250]
 
 poly12: (size = 14/13, numerator_subs: 0, omitted: 1)
+b = [#4116#, 14220, 41872, 115668, 306410, 783536, 1938602, 4645126, 10784280, 24267500, 52950744, 112087996, 230348214, 459963092, 893334830]
 
 poly14: (size = 14/15, numerator_subs: TBD, omitted: TBD)
 b = [23504, 82164, 244092, 681706, 1832736, 4777646, 12107608, 29858042, 71680232, 167557926, 381449340, 845887278, 1827779920, 3849869190]
