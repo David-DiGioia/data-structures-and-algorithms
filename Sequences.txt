@@ -44,7 +44,7 @@ a(n) = n*(n+1)*(4*n+5)/6.
      = 2/3*n^3 + 3/2*n^2 + 5/6*n
 
 4th element:
-
+a(n) = n((n+1)^2 * (16n + 11))/6
 ----------------------------------------------------
 
 b vectors (data points used to generate polynomials)
@@ -80,5 +80,5 @@ Actual:   23504, 82164
 Expected: 23424, 82158
 Diff:     80,    6
 
-
+poly16: (size = 12/17, numerator_subs: TBD, omitted: TBD)
 
