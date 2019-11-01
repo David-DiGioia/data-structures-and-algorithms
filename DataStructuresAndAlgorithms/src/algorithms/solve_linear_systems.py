@@ -1,5 +1,6 @@
 from sympy import *
 from sympy import linsolve, symbols, fraction
+from math import factorial
 
 def get_coefficients(x, count):
   arr = []
@@ -35,16 +36,40 @@ def get_equations_omit(sub_first_n, omit, b, degree):
   return get_equations_and_syms(b, sub_list[:sub_first_n], degree)
 
 # does this solution have denominators of the form (n!)^2
-def expected_sol(sol_set):
+def expected_sol(sol_set, degree):
+  if (len(sol_set) == 0):
+    return False
+  denom = factorial((degree / 2))**2
   # extract denominator from each coefficient in solution
   for sol in sol_set:
     for frac in sol:
-      print(fraction(frac)[1])
+      if denom % fraction(frac)[1] != 0:
+        return False
+  return True
 
-b = [-1, 14220, 41872, 115668, 306410, 783536, 1938602, 4645126, 10784280, 24267500, 52950744, 112087996, 230348214, 459963092, 893334830]
+def print_omitted_rec(vec, omitted_count, idx):
+  if omitted_count == 0:
+    print(vec)
+    return
+  for i in range(idx, len(vec) - omitted_count + 1):
+    temp = vec[i]
+    vec[i] = -1
+    print_omitted_rec(vec, omitted_count - 1, i + 1)
+    vec[i] = temp
 
-eqns, syms = get_equations_omit(0, -1, b, 12)
-#print(eqns)
-sol_set = linsolve(eqns, syms)
 
-print(expected_sol(sol_set))
+def print_omitted(vec, omitted_count):
+  print_omitted_rec(vec, omitted_count, 0)
+
+degree = 12
+# -1 indicates an omitted element
+b = [4116, 14220, 41872, 115668, 306410, 783536, 1938602, 4645126, 10784280, 24267500, 52950744, 112087996, 230348214, 459963092, 893334830]
+b = [1, 2, 3, 4]
+print_omitted(b, 2)
+
+# eqns, syms = get_equations_omit(0, -1, b, degree)
+# sol_set = linsolve(eqns, syms)
+
+# if expected_sol(sol_set, degree):
+#   print("Expected solution!")
+#   print(sol_set)
