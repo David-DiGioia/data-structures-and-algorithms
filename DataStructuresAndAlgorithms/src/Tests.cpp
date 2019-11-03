@@ -5,10 +5,7 @@
 
 void testUndirectedWalk()
 {
-	printPolynomial(14);
-	return;
-
-	for (int n{ 27 }; n < 100; ++n)
+	for (int n{ 1 }; n <= 18; ++n)
 	{
 		std::cout << "n: " << n << '\n';
 		for (int x{ 1 }; x <= n; ++x)

@@ -82,3 +82,7 @@ Diff:     80,    6
 
 poly16: (size = 12/17, numerator_subs: TBD, omitted: TBD)
 
+----------------------------------------------------------------
+Path counting benchmark:
+Without A*, small laptop (With n = 1 through 18):
+24762380 microseconds
