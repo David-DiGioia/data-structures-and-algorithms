@@ -1,15 +1,15 @@
 #pragma once
 #include <vector>
-#include <set>
+#include <unordered_set>
 #include "../dataStructures/Vec.h"
 
 // Minimum path distance between 2 points. In other words, the
 // number of steps needed to reach pos2 from pos1
-long long pathDistance(const Vec2<long long>& pos1, const Vec2<long long>& pos2);
+int pathDistance(const Vec2<int>& pos1, const Vec2<int>& pos2);
 
 // Recursive function to count number of undirected walks
 template<class BaseFn, class DistFn>
-static void countUndirectedWalkRec(const int n, int level, long long& count, Vec2<long long>& pos, std::set<Vec2<long long>>& visited, const BaseFn& base, const DistFn& dist)
+static void countUndirectedWalkRec(const int n, int level, unsigned long long& count, Vec2<int>& pos, std::unordered_set<Vec2<int>, HashVec2i>& visited, const BaseFn& base, const DistFn& dist)
 {
 	if (dist(pos) > n - level)
 		return;
@@ -21,10 +21,10 @@ static void countUndirectedWalkRec(const int n, int level, long long& count, Vec
 		return;
 	}
 
-	Vec2<long long> right{ pos + Vec2<long long>{ 1, 0 } };
-	Vec2<long long> left{ pos + Vec2<long long>{ -1, 0 } };
-	Vec2<long long> up{ pos + Vec2<long long>{ 0, 1 } };
-	Vec2<long long> down{ pos + Vec2<long long>{ 0, -1 } };
+	Vec2<int> right{ pos + Vec2<int>{ 1, 0 } };
+	Vec2<int> left{ pos + Vec2<int>{ -1, 0 } };
+	Vec2<int> up{ pos + Vec2<int>{ 0, 1 } };
+	Vec2<int> down{ pos + Vec2<int>{ 0, -1 } };
 
 	if (visited.find(right) == visited.end())
 	{
@@ -57,11 +57,11 @@ static void countUndirectedWalkRec(const int n, int level, long long& count, Vec
 // BaseFn returns true if a base case is reached. DistFn returns path distance
 // to target point, so we can break early if we know we can't make it
 template<class BaseFn, class DistFn>
-long long countUndirectedWalk(int n, BaseFn base, DistFn dist)
+unsigned long long countUndirectedWalk(int n, BaseFn base, DistFn dist)
 {
-	long long count{ 0 };
-	Vec2<long long> pos{ 0, 0 };
-	std::set<Vec2<long long>> visited;
+	unsigned long long count{ 0 };
+	Vec2<int> pos{ 0, 0 };
+	std::unordered_set<Vec2<int>, HashVec2i> visited;
 	visited.insert(pos);
 
 	countUndirectedWalkRec(n, 0, count, pos, visited, base, dist);

@@ -1,10 +1,22 @@
 #pragma once
+#include <functional>
 
 template<class T>
 struct Vec2
 {
 	T x;
 	T y;
+};
+
+// Hash functor for Vec2<int>
+struct HashVec2i
+{
+	std::hash<long long> hash;
+	inline size_t operator()(const Vec2<int>& v) const
+	{
+		long long temp{ ((long long)v.x) ^ (((long long)v.y) << 32) };
+		return hash(temp);
+	}
 };
 
 template<class T>
@@ -45,3 +57,4 @@ bool operator<(const Vec2<T> & v1, const Vec2<T> & v2)
 	else
 		return v1.x < v2.x;
 }
+

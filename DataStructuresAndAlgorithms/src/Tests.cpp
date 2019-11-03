@@ -12,9 +12,9 @@ void testUndirectedWalk()
 		{
 			if (n % 2 == 0 && x % 2 != 0 || n % 2 != 0 && x % 2 == 0)
 				continue;
-			auto base{ [x](const Vec2<long long> & pos) { return pos == Vec2<long long>{x, 0}; } };
-			auto dist{ [x](const Vec2<long long> & pos) { return pathDistance(pos, Vec2<long long>{x, 0}); } };
-			long long walks{ n == x ? 1 : countUndirectedWalk(n, base, dist) };
+			auto base{ [x](const Vec2<int> & pos) { return pos == Vec2<int>{x, 0}; } };
+			auto dist{ [x](const Vec2<int> & pos) { return pathDistance(pos, Vec2<int>{x, 0}); } };
+			unsigned long long walks{ n == x ? 1 : countUndirectedWalk(n, base, dist) };
 			std::cout << "(" << x << "," << walks << "),";
 		}
 		std::cout << '\n';

@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <cmath>
 
-long long pathDistance(const Vec2<long long>& pos1, const Vec2<long long>& pos2)
+int pathDistance(const Vec2<int>& pos1, const Vec2<int>& pos2)
 {
 	return std::abs(pos1.x - pos2.x) + std::abs(pos1.y - pos2.y);
 }
