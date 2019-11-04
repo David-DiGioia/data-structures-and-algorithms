@@ -127,6 +127,7 @@
     <ClCompile Include="src\algorithms\BinaryStrings.cpp" />
     <ClCompile Include="src\algorithms\PathFinding.cpp" />
     <ClCompile Include="src\algorithms\UndirectedWalk.cpp" />
+    <ClCompile Include="src\dataStructures\Vec.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Tests.cpp" />
   </ItemGroup>

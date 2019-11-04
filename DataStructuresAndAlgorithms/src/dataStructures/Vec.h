@@ -1,5 +1,7 @@
 #pragma once
 #include <functional>
+#include <iostream>
+#include <array>
 
 template<class T>
 struct Vec2
@@ -12,11 +14,7 @@ struct Vec2
 struct HashVec2i
 {
 	std::hash<long long> hash;
-	inline size_t operator()(const Vec2<int>& v) const
-	{
-		long long temp{ ((long long)v.x) ^ (((long long)v.y) << 32) };
-		return hash(temp);
-	}
+	size_t operator()(const Vec2<int>& v) const;
 };
 
 template<class T>
@@ -58,3 +56,11 @@ bool operator<(const Vec2<T> & v1, const Vec2<T> & v2)
 		return v1.x < v2.x;
 }
 
+template<class T>
+std::ostream& operator<<(std::ostream& out, Vec2<T> v)
+{
+	return out << "(" << v.x << ", " << v.y << ")";
+
+}
+// Up, down, right, left
+constexpr std::array<Vec2<int>, 4> DIRECTIONS{ Vec2<int>{0, 1}, Vec2<int>{0, -1}, Vec2<int>{1, 0}, Vec2<int>{-1, 0} };

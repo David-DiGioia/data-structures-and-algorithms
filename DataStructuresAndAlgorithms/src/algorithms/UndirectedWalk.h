@@ -7,13 +7,14 @@
 // number of steps needed to reach pos2 from pos1
 int pathDistance(const Vec2<int>& pos1, const Vec2<int>& pos2);
 
-// Recursive function to count number of undirected walks
-template<class BaseFn, class DistFn>
-static void countUndirectedWalkRec(const int n, int level, unsigned long long& count, Vec2<int>& pos, std::unordered_set<Vec2<int>, HashVec2i>& visited, const BaseFn& base, const DistFn& dist)
-{
-	if (dist(pos) > n - level)
-		return;
+// Grid of possible points a path of length n my reach
+std::unordered_set<Vec2<int>, HashVec2i> getGrid(int n);
 
+// Recursive function to count number of undirected walks
+template<class BaseFn, class TermFn>
+static void countUndirectedWalkRec(const int n, int level, unsigned long long& count, Vec2<int>& pos,
+	std::unordered_set<Vec2<int>,HashVec2i>& visited, const BaseFn& base, const TermFn& term)
+{
 	if (level == n)
 	{
 		if (base(pos))
@@ -21,50 +22,37 @@ static void countUndirectedWalkRec(const int n, int level, unsigned long long& c
 		return;
 	}
 
-	Vec2<int> right{ pos + Vec2<int>{ 1, 0 } };
-	Vec2<int> left{ pos + Vec2<int>{ -1, 0 } };
-	Vec2<int> up{ pos + Vec2<int>{ 0, 1 } };
-	Vec2<int> down{ pos + Vec2<int>{ 0, -1 } };
+	//if (term(pos, n - level, visited))
+	//	return;
 
-	if (visited.find(right) == visited.end())
+	if (term(pos, n - level))
+		return;
+
+	for (const auto& dir : DIRECTIONS)
 	{
-		visited.insert(right);
-		countUndirectedWalkRec(n, level + 1, count, right, visited, base, dist);
-		visited.erase(right);
-	}
-	if (visited.find(left) == visited.end())
-	{
-		visited.insert(left);
-		countUndirectedWalkRec(n, level + 1, count, left, visited, base, dist);
-		visited.erase(left);
-	}
-	if (visited.find(up) == visited.end())
-	{
-		visited.insert(up);
-		countUndirectedWalkRec(n, level + 1, count, up, visited, base, dist);
-		visited.erase(up);
-	}
-	if (visited.find(down) == visited.end())
-	{
-		visited.insert(down);
-		countUndirectedWalkRec(n, level + 1, count, down, visited, base, dist);
-		visited.erase(down);
+		Vec2<int> node{ pos + dir };
+		if (visited.find(node) == visited.end())
+		{
+			visited.insert(node);
+			countUndirectedWalkRec(n, level + 1, count, node, visited, base, term);
+			visited.erase(node);
+		}
 	}
 }
 
 // Count number of undirected walks. BaseFn decides if that means counting all
 // walks ending on y=0 or just certain arbitrary points.
-// BaseFn returns true if a base case is reached. DistFn returns path distance
-// to target point, so we can break early if we know we can't make it
-template<class BaseFn, class DistFn>
-unsigned long long countUndirectedWalk(int n, BaseFn base, DistFn dist)
+// BaseFn returns true if a base case is reached. TermFn returns true if we should
+// terminate the search early. For example, if no paths are possible
+template<class BaseFn, class TermFn>
+unsigned long long countUndirectedWalk(int n, BaseFn base, TermFn term)
 {
 	unsigned long long count{ 0 };
 	Vec2<int> pos{ 0, 0 };
 	std::unordered_set<Vec2<int>, HashVec2i> visited;
 	visited.insert(pos);
 
-	countUndirectedWalkRec(n, 0, count, pos, visited, base, dist);
+	countUndirectedWalkRec(n, 0, count, pos, visited, base, term);
 	return count;
 }
 

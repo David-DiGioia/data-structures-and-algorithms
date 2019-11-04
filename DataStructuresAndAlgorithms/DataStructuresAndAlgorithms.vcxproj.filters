@@ -30,6 +30,9 @@
     <ClCompile Include="src\algorithms\PathFinding.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\dataStructures\Vec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\dataStructures\Trie.h">

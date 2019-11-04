@@ -93,3 +93,15 @@ small laptop (With n = 1 through 18):
 Floodfill: no
 Hash:      yes
 18,261,959 microseconds
+
+small laptop (With n = 1 through 18):
+Floodfill: no
+Hash: yes
+Using more complicated signature for distance: yes
+178,258,990 microseconds
+
+small laptop (With n = 1 through 18):
+Floodfill: no
+Hash: yes
+Using more complicated signature for distance: no
+19,865,186 microseconds
