@@ -1,0 +1,152 @@
+oooo-
+ooo-o
+oo-oo
+o-ooo
+-oooo
+
+Budget: 2k
+
+(n choose 4) * 3^4
+
+oooo-
+ooo-o
+oo-oo
+o-ooo
+-oooo
+
+INVARIANTS:
+1) up = down
+2) right - left = n - 2k
+3) up + left = k // follows from: total cost = budget
+4) left <= up // every left comes with up/down pair
+
+(left - right + n)/2 = k
+
+(left - right + n)/2 = up + left
+left - right + n = 2*up + 2*left
+n - right = 2*up + left
+
+left = n - right - 2*up
+
+INDEPENDENT INVARIANTS:
+1) up - down                = 0
+2) right - left             = n - 2k
+3) up + left                = k
+4) up + down + right + left = n
+
+[ 1 -1  0  0 ] [up]   [ 0  ]
+[ 0  0  1 -1 ] [do] = [n-2k]
+[ 1  0  1  0 ] [le]   [ k  ]
+[ 1  1  1  1 ] [ri]   [ n  ]
+
+3D version:
+2) right - left             = n - 2k
+3) up + left                = k
+4) 2*up + right + left      = n
+
+[ 0 -1  1 ] [up] = [n-2k]
+[ 1  1  0 ] [le]   [ k  ]
+[ 2  1  1 ] [ri]   [ n  ]
+
+Rearranged:
+
+[ 2  1  1 ] [up] = [ n  ]
+[ 1  1  0 ] [le]   [ k  ]
+[ 0 -1  1 ] [ri]   [n-2k]
+
+Solution:
+ri = c
+le = 2*k - n + c
+up = -k + n - c
+for positive integer c
+
+Example1: let n = 5, k = 0
+ri = c
+le = c - 5
+up = 5 - c
+
+To keep ri, le, up > 0
+then 5 <= c <= 5
+Therefore c = 5.
+
+Example2: let n = 5, k = 1
+ri = c
+le = c - 3
+up = 4 - c
+
+3 <= c <= 4
+
+if c = 3:
+ri = 3
+le = 0
+up = 1
+
+if c = 4:
+ri = 4
+le = 1
+up = 0
+
+Example2: let n = 29, k = 5
+ri = c
+le = c - 19
+up = 24 - c
+19 <= c <= 24
+
+In general, the inequality will be
+
+n - 2k <= c <= n - k
+
+Which means there will be k+1 possible values of c.
+
+-----------------------------------------------------------------
+Optimization:
+
+ri = c
+le = (2*k - n) + c
+up = (-k + n) - c
+
+We can only return early if there is no chance that continuing the path will satisfy the above equations.
+
+Case 1: Too many steps.
+ri > n - k                       (replace c with c's max value)
+up > (-k + n) - (n - 2k) = k     (repalce c with c's min value)
+do > k                           (since up = down)
+
+Case 2: Too few steps.
+Let r be the remaining number of steps.
+ri < n - 2k - r
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------
+COST:
+right: 0
+up:    1
+down:  1
+left:  2
+
+Up and down come in pairs. Left makes and up/down pair necessary. Left can not be preceded by a right.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

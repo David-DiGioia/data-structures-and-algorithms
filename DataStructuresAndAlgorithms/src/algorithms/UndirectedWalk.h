@@ -10,10 +10,11 @@ int pathDistance(const Vec2<int>& pos1, const Vec2<int>& pos2);
 // Grid of possible points a path of length n my reach
 std::unordered_set<Vec2<int>, HashVec2i> getGrid(int n);
 
+
 // Recursive function to count number of undirected walks
 template<class BaseFn, class TermFn>
 static void countUndirectedWalkRec(const int n, int level, unsigned long long& count, Vec2<int>& pos,
-	std::unordered_set<Vec2<int>,HashVec2i>& visited, const BaseFn& base, const TermFn& term)
+	std::unordered_set<Vec2<int>, HashVec2i>& visited, const BaseFn& base, const TermFn& term)
 {
 	if (level == n)
 	{
@@ -22,11 +23,11 @@ static void countUndirectedWalkRec(const int n, int level, unsigned long long& c
 		return;
 	}
 
-	//if (term(pos, n - level, visited))
-	//	return;
-
-	if (term(pos, n - level))
+	if (term(pos, n - level, visited))
 		return;
+
+	//if (term(pos, n - level))
+	//	return;
 
 	for (const auto& dir : DIRECTIONS)
 	{
