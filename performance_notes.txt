@@ -1,0 +1,33 @@
+no flood fill, light signature (n=14)
+7,466,757
+
+no flood fill, heavy signature (n=14)
+52,262,017
+
+yes flood fill, heavy signature (n=14)
+162,438,813
+
+no flood fill, heavy signature, visited by reference (n=14)
+7,607,713
+
+yes flood fill, heavy signature, visited by reference (n=14)
+101,046,347
+
+no term functor at all (n=14)
+157,495,292
+
+yes flood fill, heavy signature, visited by reference, tempCount % 100 (n=14)
+158,059,388
+
+yes flood fill, heavy signature, visited by reference, tempCount % 100 (n=14)
+157,527,884
+----------------------------------------------------------------------------
+
+no symmetry optimization (n=14)
+7,467,303 microseconds
+
+yes symmetry optimization (n=14)
+5,743,760
+
+yes symmetry optimization and array count (n=14)
+3,478,617
