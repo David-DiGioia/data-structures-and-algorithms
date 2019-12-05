@@ -8,14 +8,27 @@
 
 void testUndirectedWalk()
 {
-	for (int n{ 30 }; n <= 50; ++n)
+
+	// things start going wrong at n=1. investigate.
+
+	for (int n{ 1 }; n <= 15; ++n)
 	{
 		std::cout << "n: " << n << '\n';
 
 		std::vector<unsigned long long> walks{ countUndirectedWalk(n) };
+		int lineLength{ 1 };
+		int lineCount{ 0 };
 		for (unsigned int i{ 0 }; i < walks.size(); ++i)
-			std::cout << "(" << (n % 2 == 0 ? 2*(i+1) : 2*i + 1) << "," << walks[i] << (i == walks.size() - 1 ? ")" : "),");
-		std::cout << '\n';
+		{
+			std::cout << walks[i] << (i == walks.size() - 1 ? "" : "\t");
+			if (++lineCount == lineLength)
+			{
+				++lineLength;
+				lineCount = 0;
+				std::cout << '\n';
+			}
+		}
+		std::cout << "\n\n";
 	}
 }
 

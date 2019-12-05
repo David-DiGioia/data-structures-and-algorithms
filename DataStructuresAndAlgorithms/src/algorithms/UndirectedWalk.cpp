@@ -5,6 +5,21 @@
 #include <cmath>
 #include <vector>
 
+int triangleNumber(int n)
+{
+	return n * (n + 1) / 2;
+}
+
+int uniquePoints(int n)
+{
+	// (2*n^2 + 10*n + 3 + (-1)^n * (2*n - 3))/16
+	return (2 * n * n + 10 * n + 3 + (n % 2 == 0 ? 1 : -1) * (2 * n - 3)) / 16;
+
+	//if (n == 0) return 0;
+	//if (n % 2 == 0) return uniquePoints(n - 2) + (n / 2) + 1;
+	//else return uniquePoints(n - 1) + 1;
+}
+
 int pathDistance(const Vec2<int>& pos1, const Vec2<int>& pos2)
 {
 	return std::abs(pos1.x - pos2.x) + std::abs(pos1.y - pos2.y);
@@ -12,23 +27,33 @@ int pathDistance(const Vec2<int>& pos1, const Vec2<int>& pos2)
 
 int pointsDistance(const Vec2<int>& pos, int n)
 {
-	if (pos.x <= 0)
-		return !(n % 2) - pos.x + 1 + std::abs(pos.y);
+	if (pos.x <= 0) return !(n % 2) - pos.x + 1 + std::abs(pos.y);
 	return (n % 2 != pos.x % 2) + std::abs(pos.y);
+}
+
+int uniquePointsDistance(const Vec2<int>& pos, int n)
+{
+	if (pos.x <= 0) return (n % 2) - pos.x + std::abs(pos.y);
+	if (pos.y <= 0) return (n % 2 != pos.x % 2) - pos.y;
+	if (pos.y >= pos.x - (n % 2) && pos.x <= (n / 2) + (n % 2)) return pos.y - pos.x + (n % 2);
+	if (pos.y >= n - pos.x && pos.x >= (n / 2) + (n % 2)) return pos.y - n + pos.x;
+	return (pos.x % 2) ^ (pos.y % 2) ^ (n % 2);
 }
 
 static void countUndirectedWalkRec(const int n, int level, unsigned long long* count, Vec2<int>& pos,
 	std::unordered_set<Vec2<int>, HashVec2i>& visited)
 {
+	int dist{ uniquePointsDistance(pos, n) };
+
 	if (level == n)
 	{
-		if (pos.y == 0 && pos.x > 0)
-			++count[(pos.x + 1)/2 - 1];
+		// subtract (pos.y == 0) since bottom row of unique triangle is missing first entry
+		if (dist == 0)
+			++count[triangleNumber((n / 2) - pos.y) - (pos.y == 0 && n % 2 == 0) + (pos.x - pos.y) / 2];
 		return;
 	}
 
-	// Add one to compensate for passing in n-1, since we split up the walk for symmetry
-	if (pointsDistance(pos, n + 1) > n - level)
+	if (dist > n - level)
 		return;
 
 	for (const auto& dir : DIRECTIONS)
@@ -45,35 +70,18 @@ static void countUndirectedWalkRec(const int n, int level, unsigned long long* c
 
 std::vector<unsigned long long> countUndirectedWalk(int n)
 {
-	int len{ (n + 1) / 2 };
+	int len{ uniquePoints(n) };
 
 	unsigned long long* count{ new unsigned long long[len] {} };
-	unsigned long long* symCount{ new unsigned long long[len] {} };
 	Vec2<int> pos{ 0, 0 };
 	std::unordered_set<Vec2<int>, HashVec2i> visited;
 	visited.insert(pos);
-
-	// left and right
-	int i{ 1 };
-	while (++i <= 3)
-	{
-		Vec2<int> dir{ pos + DIRECTIONS[i] };
-		visited.insert(dir);
-		countUndirectedWalkRec(n - 1, 0, count, dir, visited);
-		visited.erase(dir);
-	}
-
-	// up
-	Vec2<int> up{ pos + DIRECTIONS[0] };
-	visited.insert(up);
-	countUndirectedWalkRec(n - 1, 0, symCount, up, visited);
-	visited.erase(up);
+	countUndirectedWalkRec(n, 0, count, pos, visited);
 
 	std::vector<unsigned long long> result(len);
 	for (int i{ 0 }; i < len; ++i)
-		result[i] = count[i] + 2 * symCount[i];
+		result[i] = count[i];
 	delete[] count;
-	delete[] symCount;
 
 	return result;
 }
@@ -114,7 +122,7 @@ std::unordered_set<Vec2<int>, HashVec2i> getGrid(int n)
 	return gridCopy;
 }
 
-void printSequenceDifference(std::vector<int> & v)
+void printSequenceDifference(std::vector<int>& v)
 {
 	int loopCount{ (int)v.size() - 1 };
 	for (int i{ 0 }; i < loopCount; ++i)
