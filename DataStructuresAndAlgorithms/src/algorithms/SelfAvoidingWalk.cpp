@@ -1,4 +1,4 @@
-#include "UndirectedWalk.h"
+#include "SelfAvoidingWalk.h"
 #include <iostream>
 #include <numeric>
 #include <algorithm>
@@ -8,8 +8,19 @@
 #include <mutex>
 #include <utility>
 
-unsigned int threadFlags{ 1 }; // 1 since parent thread gets a slot
+#define REUSE_THREADS
+//#define SINGLE_THREADED
+
+#ifndef REUSE_THREADS
+unsigned int threadFlagsFinished{ 1 };
+#endif
+#ifdef SINGLE_THREADED
+const unsigned int threadCount{ 1 };
+#else
 const unsigned int threadCount{ std::thread::hardware_concurrency() };
+#endif
+
+unsigned int threadFlags{ 1 }; // 1 since parent thread gets a slot
 const unsigned int threadsFull{ (1u << threadCount) - 1u };
 std::mutex mtx;
 std::condition_variable cond;
@@ -21,12 +32,7 @@ int triangleNumber(int n)
 
 int uniquePoints(int n)
 {
-	// (2*n^2 + 10*n + 3 + (-1)^n * (2*n - 3))/16
 	return (2 * n * n + 10 * n + 3 + (n % 2 == 0 ? 1 : -1) * (2 * n - 3)) / 16;
-
-	//if (n == 0) return 0;
-	//if (n % 2 == 0) return uniquePoints(n - 2) + (n / 2) + 1;
-	//else return uniquePoints(n - 1) + 1;
 }
 
 int pathDistance(const Vec2<int>& pos1, const Vec2<int>& pos2)
@@ -83,7 +89,12 @@ static void countSawChild(const int n, int level, unsigned long long* count, Vec
 {
 	countSawChildRec(n, level, count, pos, visited, idx);
 	std::lock_guard<std::mutex> locker{ mtx };
+#ifdef REUSE_THREADS
 	threadFlags &= ~(1 << idx);
+#else
+	threadFlagsFinished &= ~(1 << idx);
+#endif
+	unsigned int threadFlags{ 1 }; // 1 since parent thread gets a slot
 	cond.notify_one();
 }
 
@@ -116,6 +127,9 @@ static void countSawParentRec(const int n, int level, unsigned long long* count,
 				{
 					if (!(threadFlags & (1 << j)))
 					{
+#ifndef REUSE_THREADS
+						threadFlagsFinished |= (1 << j);
+#endif
 						threadFlags |= (1 << j);
 						visited[j] = visited[0]; // initially visited is the same as parent's
 						std::thread t{ countSawChild, n, level + 1, count, node, std::ref(visited), j };
@@ -137,14 +151,18 @@ std::vector<unsigned long long> countSaw(int n)
 {
 	int len{ uniquePoints(n) };
 
-	unsigned long long* count{ new unsigned long long[len * threadCount] {} };
+	unsigned long long* count{ new unsigned long long[(unsigned long long)len * threadCount] {} };
 	Vec2<int> pos{ 0, 0 };
 	std::vector<std::unordered_set<Vec2<int>, HashVec2i>> visited(threadCount);
 	visited[0].insert(pos);
 	countSawParentRec(n, 0, count, pos, visited);
 
 	std::unique_lock<std::mutex> locker{ mtx };
+#ifdef REUSE_THREADS
 	cond.wait(locker, []() { return threadFlags == 1; }); // threadFlags == 1 if only parent thread is left
+#else
+	cond.wait(locker, []() { return threadFlagsFinished == 1; });
+#endif
 
 	std::vector<unsigned long long> result(len);
 	for (int j{ 0 }; j < threadCount; ++j)

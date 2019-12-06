@@ -2,7 +2,7 @@
 #include "dataStructures/Trie.h"
 #include "algorithms/BinaryStrings.h"
 
-void testUndirectedWalk();
+void testSelfAvoidingWalk();
 
 void testTrie();
 

@@ -4,12 +4,12 @@
 #include <vector>
 
 #include "dataStructures/Vec.h"
-#include "algorithms/UndirectedWalk.h"
+#include "algorithms/SelfAvoidingWalk.h"
 #include "algorithms/PathFinding.h"
 
-void testUndirectedWalk()
+void testSelfAvoidingWalk()
 {
-	for (int n{ 1 }; n <= 18; ++n)
+	for (int n{ 1 }; n <= 20; ++n)
 	{
 		std::cout << "n: " << n << '\n';
 

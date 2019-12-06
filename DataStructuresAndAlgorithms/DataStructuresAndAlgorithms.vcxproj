@@ -126,7 +126,7 @@
   <ItemGroup>
     <ClCompile Include="src\algorithms\BinaryStrings.cpp" />
     <ClCompile Include="src\algorithms\PathFinding.cpp" />
-    <ClCompile Include="src\algorithms\UndirectedWalk.cpp" />
+    <ClCompile Include="src\algorithms\SelfAvoidingWalk.cpp" />
     <ClCompile Include="src\dataStructures\Vec.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Tests.cpp" />
@@ -134,7 +134,7 @@
   <ItemGroup>
     <ClInclude Include="src\algorithms\BinaryStrings.h" />
     <ClInclude Include="src\algorithms\PathFinding.h" />
-    <ClInclude Include="src\algorithms\UndirectedWalk.h" />
+    <ClInclude Include="src\algorithms\SelfAvoidingWalk.h" />
     <ClInclude Include="src\dataStructures\Trie.h" />
     <ClInclude Include="src\dataStructures\Vec.h" />
     <ClInclude Include="src\Tests.h" />
