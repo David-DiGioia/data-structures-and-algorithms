@@ -24,7 +24,7 @@ std::unordered_set<Vec2<int>, HashVec2i> getGrid(int n);
 // walks ending on y=0 or just certain arbitrary points.
 // BaseFn returns true if a base case is reached. TermFn returns true if we should
 // terminate the search early. For example, if no paths are possible
-std::vector<unsigned long long> countUndirectedWalk(int n);
+std::vector<unsigned long long> countSaw(int n);
 
 // Repeatedly take the adjacent difference of a vector, printing at each step.
 // This is helpful to tell what degree a polynomial is.

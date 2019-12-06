@@ -4,6 +4,15 @@
 #include <algorithm>
 #include <cmath>
 #include <vector>
+#include <thread>
+#include <mutex>
+#include <utility>
+
+unsigned int threadFlags{ 1 }; // 1 since parent thread gets a slot
+const unsigned int threadCount{ std::thread::hardware_concurrency() };
+const unsigned int threadsFull{ (1u << threadCount) - 1u };
+std::mutex mtx;
+std::condition_variable cond;
 
 int triangleNumber(int n)
 {
@@ -40,8 +49,46 @@ int uniquePointsDistance(const Vec2<int>& pos, int n)
 	return (pos.x % 2) ^ (pos.y % 2) ^ (n % 2);
 }
 
-static void countUndirectedWalkRec(const int n, int level, unsigned long long* count, Vec2<int>& pos,
-	std::unordered_set<Vec2<int>, HashVec2i>& visited)
+static void countSawChildRec(const int n, int level, unsigned long long* count, Vec2<int>& pos,
+	std::vector<std::unordered_set<Vec2<int>, HashVec2i>>& visited, const unsigned int idx)
+{
+	int dist{ uniquePointsDistance(pos, n) };
+
+	if (level == n)
+	{
+		// subtract (pos.y == 0) since bottom row of unique triangle is missing first entry
+		if (dist == 0)
+			++count[triangleNumber((n / 2) - pos.y) - (pos.y == 0 && n % 2 == 0) + (pos.x - pos.y) / 2 + uniquePoints(n) * idx];
+		return;
+	}
+
+	if (dist > n - level)
+		return;
+
+	for (const auto& dir : DIRECTIONS)
+	{
+		Vec2<int> node{ pos + dir };
+		if (visited[idx].find(node) == visited[idx].end())
+		{
+			visited[idx].insert(node);
+			countSawChildRec(n, level + 1, count, node, visited, idx);
+			visited[idx].erase(node);
+		}
+	}
+	return;
+}
+
+static void countSawChild(const int n, int level, unsigned long long* count, Vec2<int> pos,
+	std::vector<std::unordered_set<Vec2<int>, HashVec2i>>& visited, const unsigned int idx)
+{
+	countSawChildRec(n, level, count, pos, visited, idx);
+	std::lock_guard<std::mutex> locker{ mtx };
+	threadFlags &= ~(1 << idx);
+	cond.notify_one();
+}
+
+static void countSawParentRec(const int n, int level, unsigned long long* count, Vec2<int>& pos,
+	std::vector<std::unordered_set<Vec2<int>, HashVec2i>>& visited)
 {
 	int dist{ uniquePointsDistance(pos, n) };
 
@@ -56,31 +103,53 @@ static void countUndirectedWalkRec(const int n, int level, unsigned long long* c
 	if (dist > n - level)
 		return;
 
-	for (const auto& dir : DIRECTIONS)
+	unsigned int len{ DIRECTIONS.size() };
+	for (unsigned int i{ 0 }; i < len; ++i)
 	{
-		Vec2<int> node{ pos + dir };
-		if (visited.find(node) == visited.end())
+		Vec2<int> node{ pos + DIRECTIONS[i] };
+		if (visited[0].find(node) == visited[0].end())
 		{
-			visited.insert(node);
-			countUndirectedWalkRec(n, level + 1, count, node, visited);
-			visited.erase(node);
+			visited[0].insert(node);
+			if ((i != len - 1) && (threadFlags != threadsFull))
+			{
+				for (int j{ 1 }; j < threadCount; ++j) // start at j=1 since parent thread has j=0
+				{
+					if (!(threadFlags & (1 << j)))
+					{
+						threadFlags |= (1 << j);
+						visited[j] = visited[0]; // initially visited is the same as parent's
+						std::thread t{ countSawChild, n, level + 1, count, node, std::ref(visited), j };
+						t.detach();
+						break;
+					}
+				}
+			}
+			else
+			{
+				countSawParentRec(n, level + 1, count, node, visited);
+			}
+			visited[0].erase(node);
 		}
 	}
 }
 
-std::vector<unsigned long long> countUndirectedWalk(int n)
+std::vector<unsigned long long> countSaw(int n)
 {
 	int len{ uniquePoints(n) };
 
-	unsigned long long* count{ new unsigned long long[len] {} };
+	unsigned long long* count{ new unsigned long long[len * threadCount] {} };
 	Vec2<int> pos{ 0, 0 };
-	std::unordered_set<Vec2<int>, HashVec2i> visited;
-	visited.insert(pos);
-	countUndirectedWalkRec(n, 0, count, pos, visited);
+	std::vector<std::unordered_set<Vec2<int>, HashVec2i>> visited(threadCount);
+	visited[0].insert(pos);
+	countSawParentRec(n, 0, count, pos, visited);
+
+	std::unique_lock<std::mutex> locker{ mtx };
+	cond.wait(locker, []() { return threadFlags == 1; }); // threadFlags == 1 if only parent thread is left
 
 	std::vector<unsigned long long> result(len);
-	for (int i{ 0 }; i < len; ++i)
-		result[i] = count[i];
+	for (int j{ 0 }; j < threadCount; ++j)
+		for (int i{ 0 }; i < len; ++i)
+			result[i] += count[i + len * j];
 	delete[] count;
 
 	return result;

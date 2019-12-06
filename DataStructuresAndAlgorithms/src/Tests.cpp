@@ -2,20 +2,18 @@
 #include <iostream>
 #include <unordered_set>
 #include <vector>
+
 #include "dataStructures/Vec.h"
 #include "algorithms/UndirectedWalk.h"
 #include "algorithms/PathFinding.h"
 
 void testUndirectedWalk()
 {
-
-	// things start going wrong at n=1. investigate.
-
-	for (int n{ 1 }; n <= 15; ++n)
+	for (int n{ 1 }; n <= 18; ++n)
 	{
 		std::cout << "n: " << n << '\n';
 
-		std::vector<unsigned long long> walks{ countUndirectedWalk(n) };
+		std::vector<unsigned long long> walks{ countSaw(n) };
 		int lineLength{ 1 };
 		int lineCount{ 0 };
 		for (unsigned int i{ 0 }; i < walks.size(); ++i)
