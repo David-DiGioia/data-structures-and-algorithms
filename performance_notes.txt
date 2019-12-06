@@ -31,3 +31,21 @@ yes symmetry optimization (n=14)
 
 yes symmetry optimization and array count (n=14)
 3,478,617
+
+----------------------------------------------------------------------------
+
+Counting all unique points (instead of just 0's)
+
+Single threaded (n=18)
+9,704,313 microseconds
+
+Multithreaded (8 threads, n=18)
+6,994,019 microseconds
+
+
+
+
+
+
+
+
